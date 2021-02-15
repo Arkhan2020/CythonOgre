@@ -41,6 +41,7 @@ LDFLAGS= \
 	-Wl,--no-allow-shlib-undefined
 
 CYFLAGS= \
+	--cplus \
 	-X language_level=3 \
 	-X boundscheck=False
 
