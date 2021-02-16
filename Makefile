@@ -41,6 +41,7 @@ LDFLAGS= \
 	-Wl,--no-allow-shlib-undefined
 
 CYFLAGS= \
+	-3 \
 	--cplus \
 	-X language_level=3 \
 	-X boundscheck=False
@@ -59,8 +60,15 @@ LIBS=
 
 all: helloworld.so
 
-%.so: src/%.o
-	$(CXX) -shared $(CPPSTD) $(CSTD) $(LDFLAGS) $(PKG_CONFIG_LDFLAGS) -o $@ $< $(LIBS) $(PKG_CONFIG_LIBS)
+PYX_SRCS= src/helloworld.pyx
+PYX_CPPS= $(subst .pyx,.cpp,$(PYX_SRCS))
+PYX_OBJS= $(subst .pyx,.o,$(PYX_SRCS))
+
+SRCS= src/OgreApp.cpp
+OBJS= $(PYX_OBJS) $(subst .cpp,.o,$(SRCS))
+
+helloworld.so: $(OBJS)
+	$(CXX) -shared $(CPPSTD) $(CSTD) $(LDFLAGS) $(PKG_CONFIG_LDFLAGS) -o $@ $+ $(LIBS) $(PKG_CONFIG_LIBS)
 
 %.o: %.cpp
 	$(CXX) $(CPPSTD) $(OPTS) -o $@ -c $< $(DEFS) $(INCS) $(CFLAGS) $(PKG_CONFIG_CFLAGS)
@@ -75,13 +83,15 @@ all: helloworld.so
 	$(CYTHON) $(CYFLAGS) -o $@ $<
 
 clean:
-	find . -name '*.o' -exec $(RM) {} +
-	find . -name '*.a' -exec $(RM) {} +
-	find . -name '*.so' -exec $(RM) {} +
-	find . -name '*.pyc' -exec $(RM) {} +
-	find . -name '*.pyo' -exec $(RM) {} +
-	find . -name '*.bak' -exec $(RM) {} +
-	find . -name '*~' -exec $(RM) {} +
-	$(RM) core
+	$(RM) $(PYX_CPPS) $(OBJS)
+	@find . -name '*.o' -exec $(RM) {} +
+	@find . -name '*.a' -exec $(RM) {} +
+	@find . -name '*.so' -exec $(RM) {} +
+	@find . -name '*.pyc' -exec $(RM) {} +
+	@find . -name '*.pyo' -exec $(RM) {} +
+	@find . -name '*.bak' -exec $(RM) {} +
+	@find . -name '*~' -exec $(RM) {} +
+	@$(RM) core
+	$(RM) --recursive ~/.cache/CythonOgreTestApp/
 
 .PHONY: all clean
