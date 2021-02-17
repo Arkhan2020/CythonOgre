@@ -1,0 +1,9 @@
+Using C++ in Cython
+https://cython.readthedocs.io/en/latest/src/userguide/wrapping_CPlusPlus.html
+
+Cython/Python/C++ - Inheritance: Passing Derived Class as Argument to Function expecting base class
+https://stackoverflow.com/questions/28573479/cython-python-c-inheritance-passing-derived-class-as-argument-to-function-e
+
+How do I wrap a C++ class with Cython?
+https://stackoverflow.com/questions/8933263/how-do-i-wrap-a-c-class-with-cython
+
