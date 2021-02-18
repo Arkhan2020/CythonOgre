@@ -1,3 +1,6 @@
+from cpython.ref cimport PyObject
+from libcpp.string cimport string
+
 cdef extern from "Ogre.h":
     pass
 
@@ -12,5 +15,6 @@ cdef extern from "OgreRTShaderSystem.h":
 
 cdef extern from "OgreApp.h" namespace "CythonOgre":
     cdef cppclass OgreApp:
-        OgreApp() except +
+        OgreApp(PyObject *obj) except +
+        const string getTitle() except +
         void run()

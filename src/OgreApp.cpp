@@ -1,9 +1,49 @@
 #include "OgreApp.h"
 
+#include "helloworld_api.h"
+
+
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
 namespace CythonOgre {
 
-OgreApp::OgreApp() : ApplicationContext{"CythonOgreTestApp"} {
+OgreApp::OgreApp(PyObject *obj) : ApplicationContext{"CythonOgreTestApp"}, m_obj(obj) {
+    if (import_helloworld())
+    {
+        std::cerr << "Error executing import_helloworld!\n";
+        throw std::runtime_error("Error executing import_helloworld");
+    }
+    else
+    {
+        Py_XINCREF(this->m_obj);
+    }
 }
+
+OgreApp::~OgreApp() {
+    PyGILState_STATE gstate;
+    gstate = PyGILState_Ensure();
+    Py_XDECREF(this->m_obj);
+    PyGILState_Release(gstate);
+}
+
+std::string OgreApp::callCythonReturnString(std::string methodName) const {
+    if (!this->m_obj)
+        throw std::runtime_error("Python object not set");
+
+    std::string error;
+    std::string ret_val = string_cy_call_fct(this->m_obj, methodName, &error);
+    if (!error.empty())
+        throw std::runtime_error(error);
+
+    return ret_val;
+}
+
+std::string OgreApp::getTitle() const {
+    return callCythonReturnString("get_title");
+}
+
 
 bool OgreApp::keyPressed(KeyboardEvent const & evt) {
 	if (evt.keysym.sym == SDLK_ESCAPE)
