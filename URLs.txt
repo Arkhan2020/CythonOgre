@@ -7,3 +7,14 @@ https://stackoverflow.com/questions/28573479/cython-python-c-inheritance-passing
 How do I wrap a C++ class with Cython?
 https://stackoverflow.com/questions/8933263/how-do-i-wrap-a-c-class-with-cython
 
+How to Wrap Polymorphic C++ Classes with Cython
+https://altugkarakurt.github.io/how-to-wrap-polymorphic-cpp-classes-with-cython
+
+Can I override a C++ virtual function within Python with Cython?
+https://stackoverflow.com/questions/10126668/can-i-override-a-c-virtual-function-within-python-with-cython
+
+Implementing C++ Virtual Functions in Cython
+https://monadical.com/posts/virtual-classes-in-cython.html
+
+Using Cython Declarations from C
+https://cython.readthedocs.io/en/latest/src/userguide/external_C_code.html#using-cython-declarations-from-c
