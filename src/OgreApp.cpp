@@ -2,7 +2,6 @@
 
 #include "helloworld_api.h"
 
-
 #include <cstdlib>
 #include <iostream>
 #include <string>
@@ -10,13 +9,10 @@
 namespace CythonOgre {
 
 OgreApp::OgreApp(PyObject *obj) : ApplicationContext{"CythonOgreTestApp"}, m_obj(obj) {
-    if (import_helloworld())
-    {
+    if (import_helloworld()) {
         std::cerr << "Error executing import_helloworld!\n";
         throw std::runtime_error("Error executing import_helloworld");
-    }
-    else
-    {
+    } else {
         Py_XINCREF(this->m_obj);
     }
 }
@@ -93,6 +89,8 @@ void OgreApp::setup() {
 }
 
 void OgreApp::run() {
+	Ogre::String configDir = Ogre::StringUtil::standardisePath(".");
+	getFSLayer().setConfigPaths({ configDir });
 	initApp();
 	getRoot()->getRenderSystem()->_initRenderTargets();
 	getRoot()->clearEventTimes();
