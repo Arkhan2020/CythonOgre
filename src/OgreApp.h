@@ -20,6 +20,9 @@ public:
 	bool keyPressed(KeyboardEvent const & evt) override;
 	virtual std::string getTitle() const;
 
+	void startApp();
+	void stopApp();
+
 private:
 	PyObject *m_obj;
 	std::string callCythonReturnString(std::string) const;

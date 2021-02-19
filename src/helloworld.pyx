@@ -18,6 +18,10 @@ cdef class PyOgreApp:
         return "Hello"
     def getTitle(self): # This is the function that calls C++ code
        return self.thisptr.getTitle().decode('UTF-8')
+    def startApp(self):
+       return self.thisptr.startApp()
+    def stopApp(self):
+       return self.thisptr.stopApp()
     def run(self):
        return self.thisptr.run()
 
@@ -34,4 +38,6 @@ cdef public api:
 
 app = PyOgreApp()
 print(app.getTitle())
+app.startApp()
 app.run()
+app.stopApp()

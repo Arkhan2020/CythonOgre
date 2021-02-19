@@ -88,13 +88,19 @@ void OgreApp::setup() {
 	node->attachObject(ent);
 }
 
-void OgreApp::run() {
+void OgreApp::startApp() {
 	Ogre::String configDir = Ogre::StringUtil::standardisePath(".");
 	getFSLayer().setConfigPaths({ configDir });
 	initApp();
 	getRoot()->getRenderSystem()->_initRenderTargets();
 	getRoot()->clearEventTimes();
+}
 
+void OgreApp::stopApp() {
+	closeApp();
+}
+
+void OgreApp::run() {
 	// Infinite loop, until broken out of by frame listeners
 	// or break out by calling queueEndRendering()
 	while (!getRoot()->endRenderingQueued()) {
@@ -102,8 +108,6 @@ void OgreApp::run() {
 			break;
 		}
 	}
-
-	closeApp();
 }
 
 } // namespace CythonOgre

@@ -17,4 +17,6 @@ cdef extern from "OgreApp.h" namespace "CythonOgre":
     cdef cppclass OgreApp:
         OgreApp(PyObject *obj) except +
         const string getTitle() except +
+        void startApp()
+        void stopApp()
         void run()
