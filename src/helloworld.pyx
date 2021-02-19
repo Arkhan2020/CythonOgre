@@ -22,8 +22,10 @@ cdef class PyOgreApp:
        return self.thisptr.startApp()
     def stopApp(self):
        return self.thisptr.stopApp()
-    def run(self):
-       return self.thisptr.run()
+    def endRenderingQueued(self):
+       return self.thisptr.getRoot().endRenderingQueued()
+    def renderOneFrame(self):
+       return self.thisptr.getRoot().renderOneFrame()
 
 cdef public api:
     string string_cy_call_fct(object obj, string method, string *error) with gil:
@@ -39,5 +41,7 @@ cdef public api:
 app = PyOgreApp()
 print(app.getTitle())
 app.startApp()
-app.run()
+while not app.endRenderingQueued():
+    if not app.renderOneFrame():
+        break
 app.stopApp()

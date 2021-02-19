@@ -15,7 +15,6 @@ class OgreApp : public ApplicationContext, public InputListener {
 public:
 	OgreApp(PyObject *obj);
 	virtual ~OgreApp();
-	void run();
 	void setup() override;
 	bool keyPressed(KeyboardEvent const & evt) override;
 	virtual std::string getTitle() const;
