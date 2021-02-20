@@ -12,10 +12,10 @@ using namespace OgreBites;
 
 namespace CythonOgre {
 
-class OgreApp : public ApplicationContext, public InputListener {
+class PyApplicationContext : public ApplicationContext, public InputListener {
 public:
-	OgreApp(PyObject *obj);
-	virtual ~OgreApp();
+	PyApplicationContext(PyObject *obj);
+	virtual ~PyApplicationContext();
 	void setup() override;
 	bool keyPressed(KeyboardEvent const & evt) override;
 	virtual std::string getTitle() const;

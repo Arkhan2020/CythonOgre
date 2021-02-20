@@ -18,8 +18,8 @@ cdef extern from "OgreRTShaderSystem.h":
     pass
 
 cdef extern from "OgreApp.h" namespace "CythonOgre":
-    cdef cppclass OgreApp:
-        OgreApp(PyObject *obj) except +
+    cdef cppclass PyApplicationContext:
+        PyApplicationContext(PyObject *obj) except +
         Root* getRoot()
         const string getTitle() except +
         void startApp(vector[string] config_dirs)

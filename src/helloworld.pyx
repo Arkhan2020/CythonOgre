@@ -1,7 +1,7 @@
 import os
 import traceback
 
-from Ogre cimport OgreApp
+from Ogre cimport PyApplicationContext
 
 from cpython.ref cimport PyObject
 from cython.operator import dereference
@@ -10,9 +10,9 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 
 cdef class PyOgreApp:
-    cdef OgreApp* thisptr
+    cdef PyApplicationContext* thisptr
     def __cinit__(self):
-       self.thisptr = new OgreApp(<PyObject*>self)
+       self.thisptr = new PyApplicationContext(<PyObject*>self)
     def __dealloc__(self):
        if self.thisptr:
            del self.thisptr

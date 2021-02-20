@@ -8,7 +8,7 @@
 
 namespace CythonOgre {
 
-OgreApp::OgreApp(PyObject *obj) : ApplicationContext{"CythonOgreTestApp"}, m_obj(obj) {
+PyApplicationContext::PyApplicationContext(PyObject *obj) : ApplicationContext{"CythonOgreTestApp"}, m_obj(obj) {
     if (import_helloworld()) {
         std::cerr << "Error executing import_helloworld!\n";
         throw std::runtime_error("Error executing import_helloworld");
@@ -17,14 +17,14 @@ OgreApp::OgreApp(PyObject *obj) : ApplicationContext{"CythonOgreTestApp"}, m_obj
     }
 }
 
-OgreApp::~OgreApp() {
+PyApplicationContext::~PyApplicationContext() {
     PyGILState_STATE gstate;
     gstate = PyGILState_Ensure();
     Py_XDECREF(this->m_obj);
     PyGILState_Release(gstate);
 }
 
-std::string OgreApp::callCythonReturnString(std::string methodName) const {
+std::string PyApplicationContext::callCythonReturnString(std::string methodName) const {
     if (!this->m_obj)
         throw std::runtime_error("Python object not set");
 
@@ -36,12 +36,12 @@ std::string OgreApp::callCythonReturnString(std::string methodName) const {
     return ret_val;
 }
 
-std::string OgreApp::getTitle() const {
+std::string PyApplicationContext::getTitle() const {
     return callCythonReturnString("get_title");
 }
 
 
-bool OgreApp::keyPressed(KeyboardEvent const & evt) {
+bool PyApplicationContext::keyPressed(KeyboardEvent const & evt) {
 	if (evt.keysym.sym == SDLK_ESCAPE)
 	{
 		getRoot()->queueEndRendering();
@@ -51,7 +51,7 @@ bool OgreApp::keyPressed(KeyboardEvent const & evt) {
 		return false;  // key not processed
 }
 
-void OgreApp::setup() {
+void PyApplicationContext::setup() {
 	ApplicationContext::setup();
 	addInputListener(this);  // register for input events
 
@@ -88,7 +88,7 @@ void OgreApp::setup() {
 	node->attachObject(ent);
 }
 
-void OgreApp::startApp(const std::vector<std::string>& config_dirs) {
+void PyApplicationContext::startApp(const std::vector<std::string>& config_dirs) {
 	//~ Ogre::String configDir = Ogre::StringUtil::standardisePath(".");
 	//~ getFSLayer().setConfigPaths({ configDir });
 	getFSLayer().setConfigPaths(config_dirs);
@@ -97,7 +97,7 @@ void OgreApp::startApp(const std::vector<std::string>& config_dirs) {
 	getRoot()->clearEventTimes();
 }
 
-void OgreApp::stopApp() {
+void PyApplicationContext::stopApp() {
 	closeApp();
 }
 
