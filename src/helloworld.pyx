@@ -5,19 +5,28 @@ from Ogre cimport PyApplicationContext
 
 from cpython.ref cimport PyObject
 from cython.operator import dereference
+from libcpp cimport bool
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
 cdef public api:
     string cyfunc_string_void(object obj, string method, string *error) with gil:
-        """Lookup and execute a pure virtual method returning a string"""
         try:
             func = getattr(obj, method.decode('UTF-8'))
-            ret_str = func()
-            return ret_str.encode('UTF-8')
+            ret_value = func()
+            return ret_value.encode('UTF-8')
         except Exception as e:
             error[0] = traceback.format_exc().encode('UTF-8')
         return b""
+
+    bool cyfunc_bool_void(object obj, string method, string *error) with gil:
+        try:
+            func = getattr(obj, method.decode('UTF-8'))
+            ret_value = func()
+            return ret_value.encode('UTF-8')
+        except Exception as e:
+            error[0] = traceback.format_exc().encode('UTF-8')
+        return 0
 
 cdef class OgreApplicationContext:
     cdef PyApplicationContext* thisptr

@@ -24,7 +24,7 @@ PyApplicationContext::~PyApplicationContext() {
     PyGILState_Release(gstate);
 }
 
-std::string PyApplicationContext::callCythonReturnString(std::string methodName) const {
+std::string PyApplicationContext::callCythonVoidReturnString(std::string methodName) const {
     if (!this->m_obj) {
         throw std::runtime_error("Python object not set");
     }
@@ -36,8 +36,20 @@ std::string PyApplicationContext::callCythonReturnString(std::string methodName)
     return ret_val;
 }
 
+bool PyApplicationContext::callCythonVoidReturnBool(std::string methodName) const {
+    if (!this->m_obj) {
+        throw std::runtime_error("Python object not set");
+    }
+    std::string error;
+    bool ret_val = cyfunc_bool_void(this->m_obj, methodName, &error);
+    if (!error.empty()) {
+        throw std::runtime_error(error);
+    }
+    return ret_val;
+}
+
 std::string PyApplicationContext::getTitle() const {
-    return callCythonReturnString("get_title");
+    return callCythonVoidReturnString("get_title");
 }
 
 

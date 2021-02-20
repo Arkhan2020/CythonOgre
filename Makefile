@@ -83,7 +83,11 @@ helloworld.so: $(OBJS)
 	$(CYTHON) $(CYFLAGS) -o $@ $<
 
 clean:
-	$(RM) $(PYX_CPPS) $(OBJS)
+	$(RM) $(OBJS)
+	$(RM) $(subst .pyx,.cpp,$(PYX_SRCS))
+	$(RM) $(subst .pyx,_api.cpp,$(PYX_SRCS))
+	$(RM) $(subst .pyx,.h,$(PYX_SRCS))
+	$(RM) $(subst .pyx,_api.h,$(PYX_SRCS))
 	@find . -name '*.o' -exec $(RM) {} +
 	@find . -name '*.a' -exec $(RM) {} +
 	@find . -name '*.so' -exec $(RM) {} +

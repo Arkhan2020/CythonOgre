@@ -25,8 +25,8 @@ public:
 
 private:
     PyObject *m_obj;
-    std::string callCythonReturnString(std::string) const;
-
+    std::string callCythonVoidReturnString(std::string) const;
+    bool callCythonVoidReturnBool(std::string) const;
 };
 
 } // namespace CythonOgre
