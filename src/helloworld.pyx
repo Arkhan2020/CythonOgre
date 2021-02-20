@@ -84,10 +84,10 @@ class OgreApplicationContext(_OgreApplicationContext):
     def get_title(self):
         return "What"
 
-app = OgreApplicationContext()
-print(app.getTitle())
-app.startApp()
-while not app.endRenderingQueued():
-    if not app.renderOneFrame():
-        break
-app.stopApp()
+#app = OgreApplicationContext()
+#print(app.getTitle())
+#app.startApp()
+#while not app.endRenderingQueued():
+#    if not app.renderOneFrame():
+#        break
+#app.stopApp()
