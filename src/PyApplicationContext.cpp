@@ -24,6 +24,17 @@ PyApplicationContext::~PyApplicationContext() {
     PyGILState_Release(gstate);
 }
 
+void PyApplicationContext::callCythonVoidReturnVoid(std::string methodName) const {
+    if (!this->m_obj) {
+        throw std::runtime_error("Python object not set");
+    }
+    std::string error;
+    cyfunc_void_void(this->m_obj, methodName, &error);
+    if (!error.empty()) {
+        throw std::runtime_error(error);
+    }
+}
+
 std::string PyApplicationContext::callCythonVoidReturnString(std::string methodName) const {
     if (!this->m_obj) {
         throw std::runtime_error("Python object not set");
@@ -60,11 +71,6 @@ bool PyApplicationContext::callCythonKeyboardEventReturnBool(std::string methodN
     return ret_val;
 }
 
-std::string PyApplicationContext::getTitle() const {
-    return callCythonVoidReturnString("get_title");
-}
-
-
 bool PyApplicationContext::keyPressed(KeyboardEvent const & evt) {
     callCythonKeyboardEventReturnBool("key_pressed", evt);
     if (evt.keysym.sym == SDLK_ESCAPE) {
@@ -78,6 +84,8 @@ bool PyApplicationContext::keyPressed(KeyboardEvent const & evt) {
 void PyApplicationContext::setup() {
     ApplicationContext::setup();
     addInputListener(this);  // register for input events
+
+    callCythonVoidReturnVoid("setup");
 
     SceneManager * scene = getRoot()->createSceneManager();
     scene->setAmbientLight(ColourValue{0.5, 0.5, 0.5});

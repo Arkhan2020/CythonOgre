@@ -28,7 +28,6 @@ cdef extern from "PyApplicationContext.h" namespace "CythonOgre":
     cdef cppclass PyApplicationContext:
         PyApplicationContext(PyObject *obj) except +
         Root* getRoot()
-        const string getTitle() except +
         void startApp(vector[string] config_dirs)
         void stopApp()
         void run()

@@ -28,6 +28,13 @@ class OgreKeyboardEvent(_OgreKeyboardEvent):
     pass
 
 cdef public api:
+    string cyfunc_void_void(object obj, string method, string *error) with gil:
+        try:
+            func = getattr(obj, method.decode('UTF-8'))
+            func()
+        except Exception as e:
+            error[0] = traceback.format_exc().encode('UTF-8')
+
     string cyfunc_string_void(object obj, string method, string *error) with gil:
         try:
             func = getattr(obj, method.decode('UTF-8'))
@@ -62,8 +69,6 @@ cdef class _OgreApplicationContext:
     def __dealloc__(self):
        if self.thisptr:
            del self.thisptr
-    def getTitle(self):
-       return self.thisptr.getTitle().decode('UTF-8')
     def startApp(self, config_dirs = [os.path.realpath(__file__)]):
        cdef vector[string] dirs = [os.path.realpath(dir).encode('UTF-8') for dir in config_dirs]
        return self.thisptr.startApp(dirs)
@@ -74,18 +79,16 @@ cdef class _OgreApplicationContext:
     def renderOneFrame(self):
        return self.thisptr.getRoot().renderOneFrame()
     # Events called from C++
-    def get_title(self):
-        return "Hello"
+    def setup(self):
+        print("Set it up, Baby")
     def key_pressed(self, event):
         print("Key Pressed: " + str(event.get_keysym_code()))
         return 0
 
 class OgreApplicationContext(_OgreApplicationContext):
-    def get_title(self):
-        return "What"
+    pass
 
 #app = OgreApplicationContext()
-#print(app.getTitle())
 #app.startApp()
 #while not app.endRenderingQueued():
 #    if not app.renderOneFrame():

@@ -18,13 +18,14 @@ public:
     virtual ~PyApplicationContext();
     void setup() override;
     bool keyPressed(KeyboardEvent const & evt) override;
-    virtual std::string getTitle() const;
 
     void startApp(const std::vector<std::string>& config_dirs);
     void stopApp();
 
 private:
     PyObject *m_obj;
+
+    void callCythonVoidReturnVoid(std::string methodName) const;
     std::string callCythonVoidReturnString(std::string) const;
     bool callCythonVoidReturnBool(std::string) const;
     bool callCythonKeyboardEventReturnBool(std::string, KeyboardEvent const & evt) const;
