@@ -88,9 +88,10 @@ void OgreApp::setup() {
 	node->attachObject(ent);
 }
 
-void OgreApp::startApp() {
-	Ogre::String configDir = Ogre::StringUtil::standardisePath(".");
-	getFSLayer().setConfigPaths({ configDir });
+void OgreApp::startApp(const std::vector<std::string>& config_dirs) {
+	//~ Ogre::String configDir = Ogre::StringUtil::standardisePath(".");
+	//~ getFSLayer().setConfigPaths({ configDir });
+	getFSLayer().setConfigPaths(config_dirs);
 	initApp();
 	getRoot()->getRenderSystem()->_initRenderTargets();
 	getRoot()->clearEventTimes();

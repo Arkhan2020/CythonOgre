@@ -1,16 +1,18 @@
+import os
 import traceback
 
 from Ogre cimport OgreApp
 
-cimport cpython.ref as cpy_ref
+from cpython.ref cimport PyObject
 from cython.operator import dereference
 from cpython.ref cimport PyObject
 from libcpp.string cimport string
+from libcpp.vector cimport vector
 
 cdef class PyOgreApp:
     cdef OgreApp* thisptr
     def __cinit__(self):
-       self.thisptr = new OgreApp(<cpy_ref.PyObject*>self)
+       self.thisptr = new OgreApp(<PyObject*>self)
     def __dealloc__(self):
        if self.thisptr:
            del self.thisptr
@@ -18,8 +20,9 @@ cdef class PyOgreApp:
         return "Hello"
     def getTitle(self): # This is the function that calls C++ code
        return self.thisptr.getTitle().decode('UTF-8')
-    def startApp(self):
-       return self.thisptr.startApp()
+    def startApp(self, config_dirs = [os.path.realpath(__file__)]):
+       cdef vector[string] dirs = [os.path.realpath(dir).encode('UTF-8') for dir in config_dirs]
+       return self.thisptr.startApp(dirs)
     def stopApp(self):
        return self.thisptr.stopApp()
     def endRenderingQueued(self):

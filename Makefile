@@ -92,6 +92,6 @@ clean:
 	@find . -name '*.bak' -exec $(RM) {} +
 	@find . -name '*~' -exec $(RM) {} +
 	@$(RM) core
-	$(RM) --recursive ~/.cache/CythonOgreTestApp/
+	@#$(RM) --recursive ~/.cache/CythonOgreTestApp/
 
 .PHONY: all clean

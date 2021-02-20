@@ -8,6 +8,7 @@ using namespace OgreBites;
 #include <Python.h>
 
 #include <string>
+#include <vector>
 
 namespace CythonOgre {
 
@@ -19,7 +20,7 @@ public:
 	bool keyPressed(KeyboardEvent const & evt) override;
 	virtual std::string getTitle() const;
 
-	void startApp();
+	void startApp(const std::vector<std::string>& config_dirs);
 	void stopApp();
 
 private:
