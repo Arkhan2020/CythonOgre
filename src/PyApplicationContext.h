@@ -14,18 +14,18 @@ namespace CythonOgre {
 
 class PyApplicationContext : public ApplicationContext, public InputListener {
 public:
-	PyApplicationContext(PyObject *obj);
-	virtual ~PyApplicationContext();
-	void setup() override;
-	bool keyPressed(KeyboardEvent const & evt) override;
-	virtual std::string getTitle() const;
+    PyApplicationContext(PyObject *obj);
+    virtual ~PyApplicationContext();
+    void setup() override;
+    bool keyPressed(KeyboardEvent const & evt) override;
+    virtual std::string getTitle() const;
 
-	void startApp(const std::vector<std::string>& config_dirs);
-	void stopApp();
+    void startApp(const std::vector<std::string>& config_dirs);
+    void stopApp();
 
 private:
-	PyObject *m_obj;
-	std::string callCythonReturnString(std::string) const;
+    PyObject *m_obj;
+    std::string callCythonReturnString(std::string) const;
 
 };
 

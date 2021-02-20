@@ -19,7 +19,7 @@
   #define DL_IMPORT(_T) _T
 #endif
 
-__PYX_EXTERN_C std::string string_cy_call_fct(PyObject *, std::string, std::string *);
+__PYX_EXTERN_C std::string cyfunc_string_void(PyObject *, std::string, std::string *);
 
 #endif /* !__PYX_HAVE_API__helloworld */
 

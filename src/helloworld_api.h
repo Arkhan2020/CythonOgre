@@ -8,8 +8,8 @@
 #include "Python.h"
 #include "helloworld.h"
 
-static std::string (*__pyx_api_f_10helloworld_string_cy_call_fct)(PyObject *, std::string, std::string *) = 0;
-#define string_cy_call_fct __pyx_api_f_10helloworld_string_cy_call_fct
+static std::string (*__pyx_api_f_10helloworld_cyfunc_string_void)(PyObject *, std::string, std::string *) = 0;
+#define cyfunc_string_void __pyx_api_f_10helloworld_cyfunc_string_void
 #if !defined(__Pyx_PyIdentifier_FromString)
 #if PY_MAJOR_VERSION < 3
   #define __Pyx_PyIdentifier_FromString(s) PyString_FromString(s)
@@ -76,7 +76,7 @@ static int import_helloworld(void) {
   PyObject *module = 0;
   module = PyImport_ImportModule("helloworld");
   if (!module) goto bad;
-  if (__Pyx_ImportFunction(module, "string_cy_call_fct", (void (**)(void))&__pyx_api_f_10helloworld_string_cy_call_fct, "std::string (PyObject *, std::string, std::string *)") < 0) goto bad;
+  if (__Pyx_ImportFunction(module, "cyfunc_string_void", (void (**)(void))&__pyx_api_f_10helloworld_cyfunc_string_void, "std::string (PyObject *, std::string, std::string *)") < 0) goto bad;
   Py_DECREF(module); module = 0;
   return 0;
   bad:

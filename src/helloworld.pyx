@@ -5,9 +5,19 @@ from Ogre cimport PyApplicationContext
 
 from cpython.ref cimport PyObject
 from cython.operator import dereference
-from cpython.ref cimport PyObject
 from libcpp.string cimport string
 from libcpp.vector cimport vector
+
+cdef public api:
+    string cyfunc_string_void(object obj, string method, string *error) with gil:
+        """Lookup and execute a pure virtual method returning a string"""
+        try:
+            func = getattr(obj, method.decode('UTF-8'))
+            ret_str = func()
+            return ret_str.encode('UTF-8')
+        except Exception as e:
+            error[0] = traceback.format_exc().encode('UTF-8')
+        return b""
 
 cdef class OgreApplicationContext:
     cdef PyApplicationContext* thisptr
@@ -29,17 +39,6 @@ cdef class OgreApplicationContext:
        return self.thisptr.getRoot().endRenderingQueued()
     def renderOneFrame(self):
        return self.thisptr.getRoot().renderOneFrame()
-
-cdef public api:
-    string string_cy_call_fct(object obj, string method, string *error) with gil:
-        """Lookup and execute a pure virtual method returning a string"""
-        try:
-            func = getattr(obj, method.decode('UTF-8'))
-            ret_str = func()
-            return ret_str.encode('UTF-8')
-        except Exception as e:
-            error[0] = traceback.format_exc().encode('UTF-8')
-        return b""
 
 app = OgreApplicationContext()
 print(app.getTitle())
