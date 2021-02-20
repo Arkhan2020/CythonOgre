@@ -48,12 +48,25 @@ bool PyApplicationContext::callCythonVoidReturnBool(std::string methodName) cons
     return ret_val;
 }
 
+bool PyApplicationContext::callCythonKeyboardEventReturnBool(std::string methodName, KeyboardEvent const & evt) const {
+    if (!this->m_obj) {
+        throw std::runtime_error("Python object not set");
+    }
+    std::string error;
+    bool ret_val = cyfunc_bool_KeyboardEvent(this->m_obj, methodName, &error, &evt);
+    if (!error.empty()) {
+        throw std::runtime_error(error);
+    }
+    return ret_val;
+}
+
 std::string PyApplicationContext::getTitle() const {
     return callCythonVoidReturnString("get_title");
 }
 
 
 bool PyApplicationContext::keyPressed(KeyboardEvent const & evt) {
+    callCythonKeyboardEventReturnBool("key_pressed", evt);
     if (evt.keysym.sym == SDLK_ESCAPE) {
         getRoot()->queueEndRendering();
         return true;

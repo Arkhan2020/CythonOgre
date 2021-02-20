@@ -18,3 +18,9 @@ https://monadical.com/posts/virtual-classes-in-cython.html
 
 Using Cython Declarations from C
 https://cython.readthedocs.io/en/latest/src/userguide/external_C_code.html#using-cython-declarations-from-c
+
+Wrapping C++ with Cython: intro
+https://azhpushkin.me/posts/cython-cpp-intro
+
+Using C++ in Cython
+http://docs.cython.org/en/latest/src/userguide/wrapping_CPlusPlus.html

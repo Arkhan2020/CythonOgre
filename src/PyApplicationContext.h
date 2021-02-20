@@ -27,6 +27,7 @@ private:
     PyObject *m_obj;
     std::string callCythonVoidReturnString(std::string) const;
     bool callCythonVoidReturnBool(std::string) const;
+    bool callCythonKeyboardEventReturnBool(std::string, KeyboardEvent const & evt) const;
 };
 
 } // namespace CythonOgre

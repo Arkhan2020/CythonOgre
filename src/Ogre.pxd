@@ -8,13 +8,20 @@ cdef extern from "Ogre.h" namespace "Ogre":
         bool endRenderingQueued()
         bool renderOneFrame()
 
-cdef extern from "OgreApplicationContext.h":
-    pass
-
-cdef extern from "OgreInput.h":
-    pass
+cdef extern from "OgreInput.h" namespace "OgreBites":
+    ctypedef int Keycode
+    cdef struct Keysym:
+        Keycode sym
+        unsigned short mod
+    cdef struct KeyboardEvent:
+        int type
+        Keysym keysym
+        unsigned char repeat
 
 cdef extern from "OgreRTShaderSystem.h":
+    pass
+
+cdef extern from "OgreApplicationContext.h":
     pass
 
 cdef extern from "PyApplicationContext.h" namespace "CythonOgre":
