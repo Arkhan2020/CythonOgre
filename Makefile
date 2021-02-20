@@ -64,7 +64,7 @@ PYX_SRCS= src/helloworld.pyx
 PYX_CPPS= $(subst .pyx,.cpp,$(PYX_SRCS))
 PYX_OBJS= $(subst .pyx,.o,$(PYX_SRCS))
 
-SRCS= src/OgreApp.cpp
+SRCS= src/PyApplicationContext.cpp
 OBJS= $(PYX_OBJS) $(subst .cpp,.o,$(SRCS))
 
 helloworld.so: $(OBJS)

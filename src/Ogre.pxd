@@ -17,7 +17,7 @@ cdef extern from "OgreInput.h":
 cdef extern from "OgreRTShaderSystem.h":
     pass
 
-cdef extern from "OgreApp.h" namespace "CythonOgre":
+cdef extern from "PyApplicationContext.h" namespace "CythonOgre":
     cdef cppclass PyApplicationContext:
         PyApplicationContext(PyObject *obj) except +
         Root* getRoot()

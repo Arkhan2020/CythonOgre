@@ -1,4 +1,4 @@
-#include "OgreApp.h"
+#include "PyApplicationContext.h"
 
 #include "helloworld_api.h"
 
