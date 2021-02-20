@@ -9,7 +9,7 @@ from cpython.ref cimport PyObject
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-cdef class PyOgreApp:
+cdef class OgreApplicationContext:
     cdef PyApplicationContext* thisptr
     def __cinit__(self):
        self.thisptr = new PyApplicationContext(<PyObject*>self)
@@ -41,7 +41,7 @@ cdef public api:
             error[0] = traceback.format_exc().encode('UTF-8')
         return b""
 
-app = PyOgreApp()
+app = OgreApplicationContext()
 print(app.getTitle())
 app.startApp()
 while not app.endRenderingQueued():
