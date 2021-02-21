@@ -91,8 +91,7 @@ void PyApplicationContext::setup() {
     scene->setAmbientLight(ColourValue{0.5, 0.5, 0.5});
 
     // register our scene with the RTSS
-    RTShader::ShaderGenerator * shadergen =
-        RTShader::ShaderGenerator::getSingletonPtr();
+    RTShader::ShaderGenerator * shadergen = RTShader::ShaderGenerator::getSingletonPtr();
     shadergen->addSceneManager(scene);
 
     SceneNode * root_node = scene->getRootSceneNode();

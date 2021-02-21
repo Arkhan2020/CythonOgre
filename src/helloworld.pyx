@@ -1,7 +1,7 @@
 import os
 import traceback
 
-from Ogre cimport PyApplicationContext, KeyboardEvent
+from Ogre cimport PyApplicationContext, KeyboardEvent, SceneManager, ShaderGenerator
 
 from cpython.ref cimport PyObject
 from cython.operator import dereference
@@ -11,21 +11,28 @@ from libcpp cimport bool
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-cdef class _OgreKeyboardEvent:
-    cdef KeyboardEvent* _evt
-    def __cinit__(self, event):
-        self._evt = <KeyboardEvent*>event
-    def get_type(self):
-        return self._evt.type
-    def get_repeat(self):
-        return self._evt.repeat
-    def get_keysym_mod(self):
-        return self._evt.keysym.mod
-    def get_keysym_code(self):
-        return self._evt.keysym.sym
+cdef class _OgreSceneManager:
+    cdef SceneManager* thisptr
+    def __cinit__(self):
+        self.thisptr = NULL # Set pointer to null on object init
 
-class OgreKeyboardEvent(_OgreKeyboardEvent):
-    pass
+cdef class _OgreShaderGenerator:
+    cdef ShaderGenerator* thisptr
+    def __cinit__(self):
+        self.thisptr = ShaderGenerator.getSingletonPtr()
+
+cdef class _OgreKeyboardEvent:
+    cdef KeyboardEvent* thisptr
+    def __cinit__(self, event):
+        self.thisptr = <KeyboardEvent*>event
+    def get_type(self):
+        return self.thisptr.type
+    def get_repeat(self):
+        return self.thisptr.repeat
+    def get_keysym_mod(self):
+        return self.thisptr.keysym.mod
+    def get_keysym_code(self):
+        return self.thisptr.keysym.sym
 
 cdef public api:
     string cyfunc_void_void(object obj, string method, string *error) with gil:
@@ -44,7 +51,7 @@ cdef public api:
             error[0] = traceback.format_exc().encode('UTF-8')
         return b""
 
-    bool cyfunc_bool_void(object obj, string method, string *error) with gil:
+    bint cyfunc_bool_void(object obj, string method, string *error) with gil:
         try:
             func = getattr(obj, method.decode('UTF-8'))
             ret_value = func()
@@ -53,32 +60,36 @@ cdef public api:
             error[0] = traceback.format_exc().encode('UTF-8')
         return 0
 
-    bool cyfunc_bool_KeyboardEvent(object obj, string method, string *error, const KeyboardEvent * event) with gil:
+    bint cyfunc_bool_KeyboardEvent(object obj, string method, string *error, const KeyboardEvent * event) with gil:
         try:
             func = getattr(obj, method.decode('UTF-8'))
-            ret_value = func(OgreKeyboardEvent(<object>event))
+            ret_value = func(_OgreKeyboardEvent(<object>event))
             return ret_value
         except Exception as e:
             error[0] = traceback.format_exc().encode('UTF-8')
-        return 0
+        return False
 
 cdef class _OgreApplicationContext:
     cdef PyApplicationContext* thisptr
     def __cinit__(self):
-       self.thisptr = new PyApplicationContext(<PyObject*>self)
+        self.thisptr = new PyApplicationContext(<PyObject*>self)
     def __dealloc__(self):
-       if self.thisptr:
-           del self.thisptr
+        if self.thisptr:
+            del self.thisptr
     def startApp(self, config_dirs = [os.path.realpath(__file__)]):
-       cdef vector[string] dirs = [os.path.realpath(dir).encode('UTF-8') for dir in config_dirs]
-       return self.thisptr.startApp(dirs)
+        cdef vector[string] dirs = [os.path.realpath(dir).encode('UTF-8') for dir in config_dirs]
+        return self.thisptr.startApp(dirs)
     def stopApp(self):
-       return self.thisptr.stopApp()
+        return self.thisptr.stopApp()
     def endRenderingQueued(self):
-       return self.thisptr.getRoot().endRenderingQueued()
+        return self.thisptr.getRoot().endRenderingQueued()
     def renderOneFrame(self):
-       return self.thisptr.getRoot().renderOneFrame()
-    # Events called from C++
+        return self.thisptr.getRoot().renderOneFrame()
+    def createSceneManager(self):
+        obj = _OgreSceneManager()
+        cdef SceneManager* ptr = self.thisptr.getRoot().createSceneManager()
+        obj.thisptr = ptr
+        return obj
     def setup(self):
         print("Set it up, Baby")
     def key_pressed(self, event):
